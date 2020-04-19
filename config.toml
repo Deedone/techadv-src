@@ -1,0 +1,34 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "Tech Adventures"
+theme = "archie"
+
+
+[params]
+subtitle = "Stuff"
+
+[[params.social]]
+name = "GitHub"
+icon = "github"
+url = "https://github.com/Deedone"
+
+[[params.social]]
+name = "Telegram"
+icon = "send"
+url = "https://t.me/deedone"
+
+
+[[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.main]]
+name = "All posts"
+url = "/posts"
+weight = 2
+
+[[menu.main]]
+name = "About"
+url = "/about"
+weight = 3
