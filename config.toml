@@ -1,32 +1,23 @@
-baseURL = "http://example.org/"
+baseURL = "https://deedone.github.io/"
 languageCode = "en-us"
 title = "Tech Adventures"
-theme = "archie"
+theme = "noteworthy"
+showReadMore = true
+[markup.goldmark.renderer]
+unsafe = true
 
+googleAnalytics = "UA-163808068-1"
 
 [params]
-subtitle = "Stuff"
+description = "Remember to create exponentially"
 
-[[params.social]]
-name = "GitHub"
-icon = "github"
-url = "https://github.com/Deedone"
-
-[[params.social]]
-name = "Telegram"
-icon = "send"
-url = "https://t.me/deedone"
+github = "https://github.com/Deedone"
 
 
 [[menu.main]]
 name = "Home"
 url = "/"
 weight = 1
-
-[[menu.main]]
-name = "All posts"
-url = "/posts"
-weight = 2
 
 [[menu.main]]
 name = "About"

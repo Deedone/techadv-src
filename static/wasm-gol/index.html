@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <style>
+      #main {
+        display: flex;
+        flex-direction: column;
+      }
+      #main controls {
+        margin-bottom: 10px;
+      }
+      body {
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+    </style>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/skeleton.css">
+    <link rel="stylesheet" href="styles/style.css">
+  </head>
+  <body>
+    <main id="main">
+      <controls>
+        <button id="step">Single step</button>
+        <button id="toggle">Toggle animation</button>
+      </controls>
+      <canvas id="drawing"></canvas>
+    </main>
+  </body>
+</html>

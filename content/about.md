@@ -7,6 +7,6 @@ Just a small blog where I will document my exploration of interesting technologi
 
 Hope it will help me to retain my motivation more easily.
 Also, I am planning to showcase some projects here soon. 
-Too many projects worth sharing ar now buried with old hard drives.
+Too many projects worth sharing are now buried with old hard drives.
 
 
