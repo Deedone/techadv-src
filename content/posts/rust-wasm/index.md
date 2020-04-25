@@ -6,15 +6,22 @@ tags: [
     "webassembly",
     "simulation",
 ]
-draft: true
+draft: false
 ---
 
-Implemented Game of Life to familiarize myself with this setup. Controls should be self-explanatory. You can also draw on a field.
+I implemented [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) to familiarize myself with this setup. Controls should be self-explanatory. You can also draw on a field. (Drawing only works from PC, not from mobile devices)
 <!--more-->
 
-<iframe src="/wasm-gol/dist" style="width:100%; border:none; overflow: hidden;" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.clientWidth+60+"px";}(this));'></iframe>
+<iframe src="/wasm-gol/dist/index.html" style="width:100%; border:none; overflow: hidden;" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.clientWidth+60+"px";}(this));'></iframe>
 
-[Source code](#)
+PRO TIP: You can toggle the `DBG` checkbox to enable debug overlay.
+This allows us to see how one of the basics GameOfLife optimization works.
+On each iteration program tracks what cells have changed and in the next iteration processes only the "hot" ones.
+This trick greatly reduces CPU load.
+Now instead of every cell we check only 10-30% of them and can make game field much bigger without losing FPS.
+
+
+[Source code](https://github.com/Deedone/techadv-src/tree/master/static/wasm-gol)
 
 ## Motivation
 I love statically typed languages.
@@ -23,7 +30,7 @@ I also love to make cool demos and visualizations and show them to people.
 Web looks like a good platform for this, **but** it's kinda slow.
 JS got a lot faster in the last years ([check out this cool talk if you are interested how](https://www.youtube.com/watch?v=uMuYaES4W3o)) but I always felt that it's not enough for me.
 <p align="center">
-<img src="/images/wasm.jpeg">
+<img src="/images/wasm.jpeg" width="90%">
 </p>
 
 Here comes [WebAssembly](https://en.wikipedia.org/wiki/WebAssembly). 
@@ -81,6 +88,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './index.js',
@@ -94,7 +102,11 @@ module.exports = {
         }),
         new WasmPackPlugin({
             crateDirectory: path.resolve(__dirname, ".")
-        })
+        }),
+        new CopyWebpackPlugin([{
+            from: "styles/*.css",
+            to: ""
+        }])
     ],
     mode: 'development'
 };
@@ -113,6 +125,7 @@ And package.json:
   },
   "devDependencies": {
     "@wasm-tool/wasm-pack-plugin": "1.0.1",
+    "copy-webpack-plugin": "^5.1.1",
     "html-webpack-plugin": "^3.2.0",
     "webpack": "^4.29.4",
     "webpack-cli": "^3.1.1",

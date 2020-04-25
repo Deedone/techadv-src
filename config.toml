@@ -12,6 +12,7 @@ googleAnalytics = "UA-163808068-1"
 description = "Remember to create exponentially"
 
 github = "https://github.com/Deedone"
+telegram = "https://t.me/deedone"
 
 
 [[menu.main]]

@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './index.js',
@@ -21,7 +22,11 @@ module.exports = {
         new webpack.ProvidePlugin({
           TextDecoder: ['text-encoding', 'TextDecoder'],
           TextEncoder: ['text-encoding', 'TextEncoder']
-        })
+        }),
+        new CopyWebpackPlugin([{
+            from: "styles/*.css",
+            to: ""
+        }])
     ],
     mode: 'development'
 };
