@@ -1,4 +1,4 @@
-baseURL = "https://deedone.github.io/"
+baseURL = "https://techadv.xyz/"
 languageCode = "en-us"
 title = "Tech Adventures"
 theme = "noteworthy"
@@ -6,10 +6,12 @@ showReadMore = true
 [markup.goldmark.renderer]
 unsafe = true
 
+
 googleAnalytics = "UA-163808068-1"
 
 [params]
 description = "Remember to create exponentially"
+description2 = "Just a small blog where I will document my exploration of interesting technologies, such as WASM, WebGL, Rust and more"
 
 github = "https://github.com/Deedone"
 telegram = "https://t.me/deedone"

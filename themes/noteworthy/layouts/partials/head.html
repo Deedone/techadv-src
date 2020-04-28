@@ -12,6 +12,10 @@
     <link rel="manifest" href="{{ "manifest.json" | relURL }}">
     <link rel="mask-icon" href="{{ "safari-pinned-tab.svg" | relURL }}" color="#FF3DB4">
     <meta name="theme-color" content="#ffffff">
+    <meta
+
+    name="description"
+    content="{{ if .Params.description2 }}{{ .Params.description2 }}{{ else if .Site.Params.Description2 }}{{ .Site.Params.Description2 }}{{ end }}"/>
 
     <!-- Styles -->
     <!-- Use Hugo Pipes to process the Sass file (convert to CSS, minify, and add a hash) -->
