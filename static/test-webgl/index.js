@@ -1,7 +1,14 @@
 
 import vert from '!raw-loader!./vertex.glsl';
-import frag from '!raw-loader!./fragment.glsl';
+import fragTwist from '!raw-loader!./fragment2.glsl';
+import fragBlur from '!raw-loader!./fragment.glsl';
+let frag;
 
+if (window.location.search.substr(1) == "blur"){
+  frag = fragBlur;
+}else{
+  frag = fragTwist;
+}
 function loadTexture(gl, prog, url) {
   const texture = gl.createTexture();
   const level = 0;
@@ -43,7 +50,6 @@ function loadTexture(gl, prog, url) {
   let uSampler = gl.getUniformLocation(prog, 'uSampler');
   gl.uniform1i(uSampler, 0)
   return texture;
-
 }
 
 function prepareWebGL(gl) {
@@ -54,6 +60,7 @@ function prepareWebGL(gl) {
   gl.compileShader(vertSh);
 
   let fragSh = gl.createShader(gl.FRAGMENT_SHADER);
+
   gl.shaderSource(fragSh, frag);
   gl.compileShader(fragSh);
 
@@ -63,7 +70,6 @@ function prepareWebGL(gl) {
   gl.attachShader(prog, fragSh);
   gl.linkProgram(prog);
   gl.useProgram(prog);
-  gl.viewport(0,0,c.width,c.height);
   return prog;
 }
 
@@ -89,16 +95,30 @@ function isPowerOf2(value) {
 
 let render;
 
+function inIframe () {
+  try {
+      return window.self !== window.top;
+  } catch (e) {
+      return true;
+  }
+}
+
 function main(){
   const c = document.getElementById("c");
-  c.width = 600;
-  c.height = 600;
+  if (inIframe()){
+    c.height = c.width = document.body.clientWidth;
+  }else{
+    c.height = c.width = 600;
+  }
   const gl = c.getContext("webgl");
   const prog = prepareWebGL(gl);
   const coord = setArrays(gl, prog);
   const iter = gl.getUniformLocation(prog, "iter");
-  const TS = gl.getUniformLocation(prog, "uTexureSize");
+  const TS = gl.getUniformLocation(prog, "uTextureSize");
   const range = document.getElementById("range");
+  console.log(c.clientWidth,c.clientHeight);
+  gl.viewport(0,0,c.width,c.height);
+  gl.uniform1f(TS, 1024.0);
   console.log(coord);
 
   render = (it) => {
@@ -108,8 +128,12 @@ function main(){
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
+    if (window.location.search.substr(1) == "blur"){
+      if(it == 0) it = 1;
+    }else{
+      it /=10;
+    }
     gl.uniform1f(iter, it);
-    gl.uniform1f(TS, 1024.0);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     console.log("render");
   }
