@@ -24,7 +24,7 @@ Here are examples of what we will do:
 
 Drag slider to see effects. 
 
-[SOURCE CODE]() 
+[SOURCE CODE](https://github.com/Deedone/techadv-src/tree/master/static/test-webgl) 
 
 If you want to skip theory and build setup click [here](#code).
 # Theory
@@ -452,7 +452,7 @@ main()
 
 That's it. 
 You can try to follow along and write it yourself.
-If you totally stuck on something, the working source from demos above is [here]().
+If you totally stuck on something, the working source from demos above is [here](https://github.com/Deedone/techadv-src/tree/master/static/test-webgl).
 
 
 ## Bonus: Blur shader
@@ -511,7 +511,7 @@ void main(void){
 }
 ```
 It's not the best, but it works.
-And you hope you can learn something from it.
+And I hope you can learn something from it.
 
 # Ideas
 You can use this project as a template for future experiments.
