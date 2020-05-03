@@ -13,6 +13,9 @@ googleAnalytics = "UA-163808068-1"
 description = "Remember to create exponentially"
 description2 = "Just a small blog where I will document my exploration of interesting technologies, such as WASM, WebGL, Rust and more"
 
+[sitemap]
+  filename = "sitemap.xml"
+
 github = "https://github.com/Deedone"
 telegram = "https://t.me/deedone"
 
@@ -20,6 +23,11 @@ telegram = "https://t.me/deedone"
 [[menu.main]]
 name = "Home"
 url = "/"
+weight = 1
+
+[[menu.main]]
+name = "Subscribe"
+url = "/subscribe"
 weight = 1
 
 [[menu.main]]

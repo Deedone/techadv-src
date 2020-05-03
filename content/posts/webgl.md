@@ -1,8 +1,11 @@
 ---
 title: "WebGL tutorial: image processing"
 date: 2020-04-25T20:00:38+03:00
-draft: true
 description2: "In this WebGL tutorial you will learn how to use the power of GPU from javascript. With some WebGL shader examples such as blur and twist."
+tags: [
+"webgl",
+"javascript"
+]
 ---
 In this tutorial you will learn how to use the power of GPU from javascript.
 With some WebGL shader examples such as blur and twist.
