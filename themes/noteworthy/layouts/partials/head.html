@@ -22,6 +22,17 @@
     {{ $main_style := resources.Get "css/main.scss" | toCSS | minify | fingerprint }}
     <link rel="stylesheet" href="{{ $main_style.Permalink }}"/>
 
+    <meta property="og:title"
+	  content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}"/>
+
+    <meta property="og:image"
+	    content="https://techadv.xyz/{{ if .Params.ogimage }}{{.Params.ogimage }}{{end}}"/>
+    <meta
+
+    property="og:description"
+    content="{{ if .Params.description2 }}{{ .Params.description2 }}{{ else if .Site.Params.Description2 }}{{ .Site.Params.Description2 }}{{ end }}"/>
+
+
     <!-- Uncomment to add custom styles -->
     <!-- Modify the custom.scss file inside assets > css to use scss -->
     <!-- {{ $custom_style := resources.Get "css/custom.scss" | toCSS | minify | fingerprint }} 
@@ -34,16 +45,9 @@
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
     {{ end }}
     {{- if not .Site.IsServer -}}
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163808068-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'UA-163808068-1');
-</script>
 
-      {{ template "_internal/google_analytics.html" . }}
+    <script data-goatcounter="https://techadv.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
     {{- end -}}
 </head>

@@ -7,14 +7,11 @@ tags: [
 "javascript"
 ]
 ---
-In this tutorial you will learn how to use the power of GPU from javascript.
-With some WebGL shader examples such as blur and twist.
+In this tutorial you will learn how to use WebGL for image processing.
+We will cover basic stuff like initialization, texture loading, and simple fragment shaders.
+I will try to cover all aspects of interaction with WebGL but you should have a decent understanding of vanilla javascript.
+If you want more in-depth explanations, there is a good book called "Learn WebGL", check it out.
 <!--more-->
-WebGL API is very similar to OpenGL, the are almost identical.
-They also use the same language for writing shaders, so you can use some OpenGL tutorials too.
-We will cover basic stuff like initialization and writing simple fragment shaders.
-If you want more detailed and deep explanations, there is a good book called "Learn WebGL", check it out.
-
 Here are examples of what we will do:
 
 ### Image twist
@@ -29,20 +26,21 @@ Drag slider to see effects.
 
 [SOURCE CODE](https://github.com/Deedone/techadv-src/tree/master/static/test-webgl) 
 
-If you want to skip theory and build setup click [here](#code).
+If you want to skip the theory and build setup click [here](#code).
 # Theory
 Everybody who tries to implement good graphics quickly understands he now has severe performance issues.
 The amount of computation required to produce any decent scene is simply huge.
 You need to process every polygon (some models have thousands of them) to project them on screen.
-Then you need to rasterize them. Apply textures, shading, reflections for every pixel on the screen.
+Then you need to rasterize them. Apply textures, shading, reflections for every pixel.
 And you also need to do all of this stuff at least 30 times in a second.
 CPUs just can't handle this very well. 
 Especially when using some scripting language with lots of overhead for every operation.
 
-Luckily people found a solution and invented GPUs.
 All of the tasks described above are highly parallel in their nature.
-Polygons and pixels usually do not depend on each other and can be easily (and much more efficiently) processed at the same time.
-GPUs are especially good at this.
+Polygons and pixels usually do not depend on each other.
+They all can be easily and much faster processed in parallel.
+And luckily people invented GPUs.
+Which are incredibly good at parallel computations.
 While modern processors usually have 4-8 cores, any decent graphics card has thousands of them.
 They are much less complex then CPU cores and highly optimized for specific 3D-related calculations.
 
@@ -54,7 +52,7 @@ They are much less complex then CPU cores and highly optimized for specific 3D-r
 </p>
 
 [WebGL](https://www.khronos.org/webgl/) is a web standard for low-level 3D graphics API.
-It allows you to run your code directly on GPU, giving you great power of it.
+It allows you to run your code directly on GPU, giving you all of it's power.
 You write all your rendering code in OpenGL Shading Language aka GLSL.
 It's not hard and very similar to C.
 Programs written in GLSL usually called shaders.
@@ -65,7 +63,7 @@ But without a proper web server you won't be able to load images and additional 
 So it's a good idea to have one.
 I will use webpack-dev-server, it's easy to setup and use.
 
-First thing that you need to do is create an empty folder and run `npm init` inside.
+The first thing that you need to do is create an empty folder and run `npm init` inside.
 You can skip all of the questions from NPM.  
 Then add this lines to `package.json`
 ```json
@@ -112,12 +110,12 @@ module.exports = {
 };
 ```
 Now you can start dev server by running `npm run serve` and open [http://localhots:8080](http://localhots:8080).
-I will not explain this all deeply, as this is not the main topic.
 Everything should work out of the box.
+You are ready for some development.
 # Code
 
 Let's deal with HTML right away.
-All we need is a canvas, so here it is.
+All we need is a canvas and a slider, so here they are.
 #### index.html
 ```html
 <html>
@@ -134,7 +132,8 @@ All we need is a canvas, so here it is.
 </html>
 ```
 
-Just basic HTML template with a canvas and slider that we can use.
+Just basic HTML template.
+Webpack will add your scripts automatically, so no need to worry about them.
 Now, it's time to initialize WebGL.
 #### index.js
 ```js
@@ -149,7 +148,7 @@ function prepareWebGL(gl) {
   let vertSh = gl.createShader(gl.VERTEX_SHADER);
   gl.shaderSource(vertSh, vert);
   gl.compileShader(vertSh);
-  // This line is very import 
+  // This line is very important
   // By default if shader compilation fails,
   // WebGL will not show you error,
   // so debugging is almost impossible
@@ -177,9 +176,9 @@ function prepareWebGL(gl) {
 ```
 Error checks are omitted for clarity.  
 So, how exactly WebGL works?
-It's like a separate world.
-You need to pass some programs and data there in a special manner.
-Then you GPU will execute your program with your data and give back an image.
+It's sort of a separate world.
+You need to pass some programs and data there.
+Then you GPU will crunch the numbers and eventually give you an image.
 
 <div align="center">
 <figure style="width:100%;margin:0;">
@@ -190,12 +189,19 @@ WebGL graphics pipeline
 </figure>
 </div>
 
+Let's familiarize ourselves with terminology.  
+**Vertex**: coordinates of some point in space, usually with additional data attached to it.
+In our case it's just coordinates.  
+**Fragment**: one pixel on the surface of the rasterized shape.
+In our case it's the same as a pixel on the screen.  
+**Rasterization**: process of converting vector image to raster image.
+In our case it's filling triangles with pixels.  
+**Framebuffer**: memory area that contains data that will be drawn on the screen.
+
 Every program consists of two parts: vertex and fragment shaders.
-Vertex shader is applied to every vertex or just point in space, that you pass in.
+Vertex shader is applied to every vertex, that you pass in.
 Here you perform all 3D stuff such as transformations, projections, and clipping.
-Then GPU rasterizes your shapes, which means filling them with pixels aka fragments.
-*Actually fragments are not exactly pixels.
-But for the scope of this tutorial they can be used interchangeably.* 
+Then GPU rasterizes your shapes.
 After rasterization every fragment is passed through fragment shader to determine it's color.
 Finally everything is drawn to the framebuffer and displayed on the screen.
 
@@ -205,6 +211,8 @@ Also, shaders produce values not by returning them but setting special variables
 Such as `gl_Position` and `gl_FragColor`, treat them as return statements.
 
 For the sake of simplicity we will mostly play with fragment shaders and stay in a 2D world.
+Later we will fill our canvas with a rectangle.
+This is needed to have some planes for applying textures.
 Here is simple pass-through vertex shader:
 
 #### vertex.glsl
@@ -231,12 +239,13 @@ void main (void) {
 }
 ```
 
-Later we will fill our canvas with a rectangle. This is needed to have some plane for applying textures.  
+
 To understand how fragment shader works you need to comprehend varying variables.
 Let's imagine you have two vertices in a line.
 In vertex shader you set some varying variable to red color from one of them and to green from another.
-All fragments between these two points will get different values when reading this varying variable.
-It will smoothly transition from red to green.
+All fragments between these two points will get different values when reading this variable.
+Hence come the "varying" modifier, these variables vary from one fragment to another.
+The value will smoothly transition from red to green.
 So if you set fragment color to the value of this variable you will get something like this.
 Such behavior is called interpolation.
 
@@ -304,7 +313,7 @@ Just two triangles to cover the canvas so we have some surface for texturing.
 Be aware that WebGL coordinates work different from canvas coordinates.
 Unlike canvas, it's origin is at the center and all coordinates are normalized.
 So no matter what aspect ratio your canvas has, X and Y are always in -1 to 1 range.
-Also Y coordinate is pointing upwards.
+Also, the Y-axis is pointing upwards.
 
 <div align="center">
 <figure style="width:100%;margin:0;">
@@ -454,8 +463,10 @@ main()
 ```
 
 That's it. 
-You can try to follow along and write it yourself.
 If you totally stuck on something, the working source from demos above is [here](https://github.com/Deedone/techadv-src/tree/master/static/test-webgl).
+It's slightly different from examples here.
+Because I added logic of choosing shaders for demos.
+But all of the crucial parts are the same.
 
 
 ## Bonus: Blur shader

@@ -1,0 +1,40 @@
+
+<body>
+
+
+    <canvas width="600" height="800" id="c"></canvas>
+    <img src="/hidden/bullet.png" id="bullet" style="display:none;">
+    <img src="/hidden/ship.png" id="ship" >
+</body>
+
+
+
+<script>
+
+
+    let b = document.getElementById("bullet");
+    let s = document.getElementById("ship");
+    let c = document.getElementById("c");
+
+
+
+
+    ctx = c.getContext("2d");
+
+    let i =200;
+
+    rend = () => {
+
+        i = i + 0.5;
+        if (i > 600){
+            i=10;
+        }
+        ctx.fillStyle="rgba(0,255,255,1)";
+        ctx.fillRect(0,0,600,800);
+        ctx.drawImage(s,0,0,2480,2480,20,20,i,i);
+        ctx.drawImage(b,0,0,236,236,20,400,i,i);
+        requestAnimationFrame(rend);
+    }
+
+    rend();
+</script>

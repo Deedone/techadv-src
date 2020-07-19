@@ -5,6 +5,7 @@ theme = "noteworthy"
 showReadMore = true
 [markup.goldmark.renderer]
 unsafe = true
+math = true
 
 
 googleAnalytics = "UA-163808068-1"
@@ -13,8 +14,6 @@ googleAnalytics = "UA-163808068-1"
 description = "Remember to create exponentially"
 description2 = "Just a small blog where I will document my exploration of interesting technologies, such as WASM, WebGL, Rust and more"
 
-[sitemap]
-  filename = "sitemap.xml"
 
 github = "https://github.com/Deedone"
 telegram = "https://t.me/deedone"
@@ -34,3 +33,6 @@ weight = 1
 name = "About"
 url = "/about"
 weight = 3
+
+[sitemap]
+  filename = "sitemap.xml"
